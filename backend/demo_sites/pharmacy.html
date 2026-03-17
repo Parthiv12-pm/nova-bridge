@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>1mg — Order Medicines Online</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --red:#e40000;--red2:#ff2e2e;--orange:#ff6b00;
+  --white:#fff;--gray:#f6f7fb;--gray2:#eef0f6;
+  --text:#1c2135;--text2:#6b7a99;--green:#00a859;
+  --border:#e0e4ef;--shadow:0 2px 16px rgba(0,0,0,0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Poppins',sans-serif;background:var(--gray);color:var(--text);}
+
+nav{background:white;border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;gap:20px;height:60px;box-shadow:var(--shadow);position:sticky;top:0;z-index:100;}
+.nav-logo{font-size:22px;font-weight:800;color:var(--red);margin-right:8px;}
+.nav-logo span{color:var(--orange);}
+.search-bar{flex:1;max-width:480px;display:flex;border:2px solid var(--red);border-radius:8px;overflow:hidden;}
+.search-bar input{flex:1;border:none;outline:none;padding:9px 14px;font-family:'Poppins',sans-serif;font-size:13px;color:var(--text);}
+.search-bar button{background:var(--red);color:white;border:none;padding:0 18px;font-weight:700;font-size:13px;cursor:pointer;}
+.nav-links{display:flex;gap:20px;font-size:12px;font-weight:600;color:var(--text2);margin-left:auto;}
+.nav-links a{text-decoration:none;color:inherit;}
+.nav-links a:hover{color:var(--red);}
+.cart-btn{background:var(--red);color:white;border:none;border-radius:8px;padding:8px 16px;font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;}
+.cart-count{background:white;color:var(--red);border-radius:50%;width:18px;height:18px;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:800;}
+
+.promo-strip{background:linear-gradient(90deg,var(--red),var(--orange));color:white;padding:10px 32px;font-size:12px;font-weight:600;display:flex;gap:32px;}
+
+.main{max-width:1100px;margin:0 auto;padding:24px;}
+
+.breadcrumb{font-size:12px;color:var(--text2);margin-bottom:16px;}
+.breadcrumb span{color:var(--red);font-weight:600;}
+
+.layout{display:grid;grid-template-columns:240px 1fr;gap:20px;}
+
+/* FILTERS */
+.filter-panel{background:white;border-radius:12px;border:1px solid var(--border);padding:16px;height:fit-content;box-shadow:var(--shadow);}
+.filter-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.filter-section{margin-bottom:16px;}
+.filter-section-title{font-size:11px;font-weight:700;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
+.filter-option{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text);padding:5px 0;cursor:pointer;}
+.filter-option input{accent-color:var(--red);}
+
+/* PRODUCTS */
+.products-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.products-title{font-size:16px;font-weight:700;color:var(--text);}
+.products-count{font-size:12px;color:var(--text2);}
+.sort-select{border:1px solid var(--border);border-radius:8px;padding:7px 12px;font-family:'Poppins',sans-serif;font-size:12px;color:var(--text);outline:none;cursor:pointer;}
+
+.product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;}
+.product-card{background:white;border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);transition:transform 0.2s,box-shadow 0.2s;}
+.product-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.12);}
+.product-img{background:var(--gray);height:120px;display:flex;align-items:center;justify-content:center;font-size:48px;position:relative;}
+.product-badge{position:absolute;top:8px;left:8px;background:var(--red);color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:4px;}
+.product-body{padding:12px;}
+.product-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.product-mfr{font-size:11px;color:var(--text2);margin-bottom:8px;}
+.product-pricing{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.product-price{font-size:16px;font-weight:800;color:var(--text);}
+.product-mrp{font-size:11px;color:var(--text2);text-decoration:line-through;}
+.product-save{font-size:11px;color:var(--green);font-weight:700;}
+.product-qty{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.qty-btn{width:28px;height:28px;border:1px solid var(--border);border-radius:6px;background:white;cursor:pointer;font-size:16px;font-weight:700;display:flex;align-items:center;justify-content:center;color:var(--text2);}
+.qty-val{font-size:14px;font-weight:700;min-width:20px;text-align:center;}
+.add-cart-btn{width:100%;background:white;border:2px solid var(--red);border-radius:8px;padding:8px;color:var(--red);font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;}
+.add-cart-btn:hover,.add-cart-btn.added{background:var(--red);color:white;}
+.product-tag{display:inline-block;background:var(--gray2);color:var(--text2);font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px;margin-bottom:6px;}
+
+/* CART SIDEBAR */
+.cart-panel{background:white;border:1px solid var(--border);border-radius:12px;padding:18px;box-shadow:var(--shadow);position:sticky;top:80px;}
+.cart-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.cart-empty{text-align:center;padding:20px;font-size:13px;color:var(--text2);}
+.cart-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border);}
+.cart-item:last-child{border-bottom:none;}
+.cart-item-icon{font-size:24px;flex-shrink:0;}
+.cart-item-info{flex:1;}
+.cart-item-name{font-size:12px;font-weight:700;color:var(--text);}
+.cart-item-qty{font-size:11px;color:var(--text2);}
+.cart-item-price{font-size:13px;font-weight:800;color:var(--text);}
+.cart-total-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;}
+.cart-total-row.big{font-weight:800;font-size:15px;border-top:2px solid var(--border);margin-top:4px;padding-top:10px;}
+.checkout-btn{width:100%;background:var(--red);color:white;border:none;border-radius:10px;padding:14px;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:14px;transition:opacity 0.2s;}
+.checkout-btn:hover{opacity:0.9;}
+
+/* CONFIRMATION */
+.order-confirmation{display:none;background:white;border-radius:16px;border:1px solid var(--border);padding:40px;text-align:center;box-shadow:var(--shadow);}
+.order-icon{font-size:64px;margin-bottom:12px;}
+.order-title{font-size:22px;font-weight:800;color:var(--green);margin-bottom:6px;}
+.order-id{font-size:13px;color:var(--text2);margin-bottom:20px;}
+.order-id strong{color:var(--red);font-size:16px;}
+.order-info{background:var(--gray);border-radius:12px;padding:16px;text-align:left;margin-bottom:20px;}
+.order-row{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid var(--border);}
+.order-row:last-child{border-bottom:none;}
+.order-row-key{color:var(--text2);font-weight:500;}
+.order-row-val{font-weight:700;}
+.back-btn{background:var(--red);color:white;border:none;border-radius:10px;padding:12px 28px;font-family:'Poppins',sans-serif;font-size:14px;font-weight:700;cursor:pointer;}
+
+.nova-badge{position:fixed;bottom:24px;right:24px;background:var(--red);color:white;border-radius:12px;padding:10px 16px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(228,0,0,0.35);z-index:999;}
+.nova-dot{width:8px;height:8px;background:#ffd6d6;border-radius:50%;animation:pulse3 1.5s infinite;}
+@keyframes pulse3{0%,100%{opacity:1}50%{opacity:0.3}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">1<span>mg</span></div>
+  <div class="search-bar">
+    <input type="text" id="search-input" placeholder="Search for medicines, health products..." value="Metformin 500mg"/>
+    <button onclick="doSearch()">Search</button>
+  </div>
+  <div class="nav-links">
+    <a href="#">Lab Tests</a>
+    <a href="#">Consult</a>
+    <a href="#">Health Checkup</a>
+  </div>
+  <button class="cart-btn" onclick="scrollToCart()">🛒 Cart <span class="cart-count" id="cart-count">0</span></button>
+</nav>
+
+<div class="promo-strip">
+  <span>🚚 FREE delivery on orders above ₹199</span>
+  <span>💊 Genuine medicines guaranteed</span>
+  <span>⚡ Express delivery in 2 hours</span>
+  <span>📱 Prescription upload accepted</span>
+</div>
+
+<div class="main">
+  <div class="breadcrumb">Home › Medicines › <span>Diabetes</span> › Metformin</div>
+
+  <div id="shop-view">
+    <div class="layout">
+      <!-- FILTERS -->
+      <div>
+        <div class="filter-panel">
+          <div class="filter-title">🔍 Filter Results</div>
+          <div class="filter-section">
+            <div class="filter-section-title">Manufacturer</div>
+            <label class="filter-option"><input type="checkbox" checked/> Sun Pharma</label>
+            <label class="filter-option"><input type="checkbox" checked/> Cipla</label>
+            <label class="filter-option"><input type="checkbox"/> Dr. Reddy's</label>
+            <label class="filter-option"><input type="checkbox"/> Mankind</label>
+          </div>
+          <div class="filter-section">
+            <div class="filter-section-title">Dosage Form</div>
+            <label class="filter-option"><input type="checkbox" checked/> Tablet</label>
+            <label class="filter-option"><input type="checkbox"/> Syrup</label>
+            <label class="filter-option"><input type="checkbox"/> Injection</label>
+          </div>
+          <div class="filter-section">
+            <div class="filter-section-title">Pack Size</div>
+            <label class="filter-option"><input type="checkbox" checked/> 10 tablets</label>
+            <label class="filter-option"><input type="checkbox"/> 15 tablets</label>
+            <label class="filter-option"><input type="checkbox"/> 30 tablets</label>
+          </div>
+          <div class="filter-section">
+            <div class="filter-section-title">Discount</div>
+            <label class="filter-option"><input type="checkbox"/> 10% or more</label>
+            <label class="filter-option"><input type="checkbox" checked/> 20% or more</label>
+            <label class="filter-option"><input type="checkbox"/> 30% or more</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCTS + CART -->
+      <div>
+        <div class="products-header">
+          <div>
+            <div class="products-title">Metformin — Search Results</div>
+            <div class="products-count">Showing 6 products</div>
+          </div>
+          <select class="sort-select"><option>Most Relevant</option><option>Price: Low to High</option><option>Discount: High to Low</option></select>
+        </div>
+
+        <div class="product-grid" id="product-grid">
+          <!-- Products rendered by JS -->
+        </div>
+
+        <div class="cart-panel" id="cart-panel" style="display:none;max-width:360px;margin:0 auto;">
+          <div class="cart-title">🛒 Your Cart</div>
+          <div id="cart-items"></div>
+          <div id="cart-summary"></div>
+          <button class="checkout-btn" onclick="placeOrder()">Place Order →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ORDER CONFIRMATION -->
+  <div class="order-confirmation" id="order-confirmation">
+    <div class="order-icon">📦</div>
+    <div class="order-title">Order Placed Successfully!</div>
+    <div class="order-id">Order ID: <strong id="order-id-val">NB-1MG-000000</strong></div>
+    <div class="order-info" id="order-details"></div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.6;">Your medicines will be delivered within 2-4 hours. Track your order in the 1mg app. Prescription required for scheduled medicines.</p>
+    <button class="back-btn" onclick="resetOrder()">Continue Shopping</button>
+  </div>
+</div>
+
+<div class="nova-badge">
+  <div class="nova-dot"></div>
+  Nova Bridge is ordering medicine
+</div>
+
+<script>
+const PRODUCTS = [
+  {id:1, icon:'💊', name:'Glycomet 500mg Tablet', mfr:'USV Pvt Ltd', price:28, mrp:35, qty:1, strip:'Strip of 15', tag:'Prescription required', badge:'20% OFF'},
+  {id:2, icon:'🔵', name:'Glucophage 500mg Tablet', mfr:'Merck Ltd', price:35, mrp:42, qty:1, strip:'Strip of 10', tag:'Prescription required', badge:'17% OFF'},
+  {id:3, icon:'💊', name:'Metformin 500mg (Cipla)', mfr:'Cipla Ltd', price:22, mrp:30, qty:1, strip:'Strip of 15', tag:'Prescription required', badge:'27% OFF'},
+  {id:4, icon:'🟠', name:'Obimet 500mg Tablet', mfr:'Franco-Indian', price:19, mrp:24, qty:1, strip:'Strip of 10', tag:'Generic', badge:'21% OFF'},
+  {id:5, icon:'💊', name:'Walaphage 500mg', mfr:'Wallace Pharma', price:16, mrp:22, qty:1, strip:'Strip of 15', tag:'Generic', badge:'27% OFF'},
+  {id:6, icon:'🔵', name:'Gluconorm 500mg', mfr:'Lupin Ltd', price:32, mrp:40, qty:1, strip:'Strip of 10', tag:'Prescription required', badge:'20% OFF'},
+];
+
+let cart = [];
+
+function renderProducts(){
+  const grid = document.getElementById('product-grid');
+  grid.innerHTML = PRODUCTS.map(p => `
+    <div class="product-card" id="prod-${p.id}">
+      <div class="product-img">${p.icon}<div class="product-badge">${p.badge}</div></div>
+      <div class="product-body">
+        <div class="product-tag">${p.tag}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-mfr">${p.mfr} · ${p.strip}</div>
+        <div class="product-pricing">
+          <span class="product-price">₹${p.price}</span>
+          <span class="product-mrp">₹${p.mrp}</span>
+          <span class="product-save">Save ₹${p.mrp - p.price}</span>
+        </div>
+        <div class="product-qty">
+          <button class="qty-btn" onclick="changeQty(${p.id},-1)">−</button>
+          <span class="qty-val" id="qty-${p.id}">1</span>
+          <button class="qty-btn" onclick="changeQty(${p.id},1)">+</button>
+        </div>
+        <button class="add-cart-btn" id="btn-${p.id}" onclick="addToCart(${p.id})">Add to Cart</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function changeQty(id, delta){
+  const p = PRODUCTS.find(x=>x.id===id);
+  p.qty = Math.max(1, p.qty + delta);
+  document.getElementById('qty-'+id).textContent = p.qty;
+}
+
+function addToCart(id){
+  const p = PRODUCTS.find(x=>x.id===id);
+  const existing = cart.find(x=>x.id===id);
+  if(existing){ existing.qty = p.qty; }
+  else { cart.push({...p}); }
+  document.getElementById('btn-'+id).textContent = '✓ Added';
+  document.getElementById('btn-'+id).classList.add('added');
+  updateCart();
+}
+
+function updateCart(){
+  const count = cart.reduce((s,x)=>s+x.qty,0);
+  document.getElementById('cart-count').textContent = count;
+  if(cart.length === 0){ document.getElementById('cart-panel').style.display='none'; return; }
+  document.getElementById('cart-panel').style.display='block';
+  const subtotal = cart.reduce((s,x)=>s+(x.price*x.qty),0);
+  const delivery = subtotal >= 199 ? 0 : 49;
+  document.getElementById('cart-items').innerHTML = cart.map(x=>`
+    <div class="cart-item">
+      <div class="cart-item-icon">${x.icon}</div>
+      <div class="cart-item-info"><div class="cart-item-name">${x.name}</div><div class="cart-item-qty">Qty: ${x.qty}</div></div>
+      <div class="cart-item-price">₹${x.price * x.qty}</div>
+    </div>
+  `).join('');
+  document.getElementById('cart-summary').innerHTML = `
+    <div class="cart-total-row"><span>Subtotal</span><span>₹${subtotal}</span></div>
+    <div class="cart-total-row"><span>Delivery</span><span>${delivery===0?'<span style="color:var(--green);font-weight:700">FREE</span>':'₹'+delivery}</span></div>
+    <div class="cart-total-row big"><span>Total</span><span>₹${subtotal+delivery}</span></div>
+  `;
+}
+
+function placeOrder(){
+  const subtotal = cart.reduce((s,x)=>s+(x.price*x.qty),0);
+  const orderId = 'NB-1MG-' + Math.random().toString(36).substr(2,6).toUpperCase();
+  document.getElementById('order-id-val').textContent = orderId;
+  const today = new Date();
+  const delivery = new Date(today.setDate(today.getDate()+1));
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('order-details').innerHTML = `
+    <div class="order-row"><span class="order-row-key">Items</span><span class="order-row-val">${cart.map(x=>x.name).join(', ')}</span></div>
+    <div class="order-row"><span class="order-row-key">Total Qty</span><span class="order-row-val">${cart.reduce((s,x)=>s+x.qty,0)} items</span></div>
+    <div class="order-row"><span class="order-row-key">Total Amount</span><span class="order-row-val" style="color:var(--green)">₹${subtotal}</span></div>
+    <div class="order-row"><span class="order-row-key">Expected Delivery</span><span class="order-row-val">${delivery.getDate()} ${months[delivery.getMonth()]} — Express (2-4 hrs)</span></div>
+    <div class="order-row"><span class="order-row-key">Delivery Address</span><span class="order-row-val">Satellite, Ahmedabad — 380015</span></div>
+  `;
+  document.getElementById('shop-view').style.display='none';
+  document.getElementById('order-confirmation').style.display='block';
+}
+
+function resetOrder(){
+  cart=[];
+  PRODUCTS.forEach(p=>p.qty=1);
+  document.getElementById('shop-view').style.display='block';
+  document.getElementById('order-confirmation').style.display='none';
+  document.getElementById('cart-count').textContent='0';
+  renderProducts();
+  updateCart();
+}
+
+function doSearch(){
+  const q = document.getElementById('search-input').value;
+  document.querySelector('.products-title').textContent = q + ' — Search Results';
+}
+
+function scrollToCart(){
+  document.getElementById('cart-panel').scrollIntoView({behavior:'smooth'});
+}
+
+renderProducts();
+</script>
+</body>
+</html>

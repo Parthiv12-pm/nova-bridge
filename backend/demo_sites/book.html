@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Apollo Hospitals — Book Appointment</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Playfair+Display:wght@600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --blue:    #003d82;
+  --blue2:   #0057b8;
+  --cyan:    #00aaff;
+  --white:   #ffffff;
+  --gray:    #f4f6fb;
+  --gray2:   #e8edf5;
+  --text:    #1a2340;
+  --text2:   #5a6a85;
+  --green:   #00b37a;
+  --red:     #e53935;
+  --border:  #d0d8e8;
+  --shadow:  0 4px 24px rgba(0,61,130,0.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--gray);color:var(--text);min-height:100vh;}
+
+/* ── NAV ── */
+nav{background:var(--white);border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;justify-content:space-between;height:64px;box-shadow:0 2px 12px rgba(0,61,130,0.07);}
+.nav-logo{display:flex;align-items:center;gap:10px;}
+.nav-logo-mark{width:38px;height:38px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:16px;letter-spacing:1px;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:20px;color:var(--blue);font-weight:600;}
+.nav-brand span{color:var(--cyan);font-size:13px;font-family:'Nunito',sans-serif;font-weight:700;letter-spacing:2px;display:block;margin-top:-4px;}
+.nav-links{display:flex;gap:28px;font-size:13px;font-weight:600;color:var(--text2);}
+.nav-links a{text-decoration:none;color:inherit;transition:color 0.2s;}
+.nav-links a:hover{color:var(--blue);}
+.nav-links a.active{color:var(--blue2);}
+.nav-btn{background:var(--blue);color:white;border:none;border-radius:8px;padding:9px 20px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+
+/* ── HERO STRIP ── */
+.hero-strip{background:linear-gradient(90deg,var(--blue) 0%,var(--blue2) 100%);color:white;padding:22px 40px;display:flex;align-items:center;justify-content:space-between;}
+.hero-title{font-size:22px;font-weight:800;}
+.hero-title span{color:#7dd3fc;}
+.hero-sub{font-size:13px;opacity:0.8;margin-top:3px;}
+.hero-pills{display:flex;gap:10px;}
+.hero-pill{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:100px;padding:6px 14px;font-size:12px;font-weight:600;}
+
+/* ── MAIN LAYOUT ── */
+.main{max-width:1100px;margin:0 auto;padding:32px 24px;display:grid;grid-template-columns:1fr 340px;gap:24px;}
+
+/* ── CARD ── */
+.card{background:white;border-radius:16px;border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden;}
+.card-header{padding:20px 24px 16px;border-bottom:1px solid var(--gray2);}
+.card-header h2{font-size:17px;font-weight:800;color:var(--blue);}
+.card-header p{font-size:13px;color:var(--text2);margin-top:3px;}
+.card-body{padding:24px;}
+
+/* ── STEP INDICATOR ── */
+.steps{display:flex;align-items:center;gap:0;margin-bottom:28px;}
+.step{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;}
+.step-num{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;flex-shrink:0;}
+.step.done .step-num{background:var(--green);color:white;}
+.step.active .step-num{background:var(--blue);color:white;}
+.step.pending .step-num{background:var(--gray2);color:var(--text2);}
+.step.active .step-label{color:var(--blue);}
+.step.pending .step-label{color:var(--text2);}
+.step-line{flex:1;height:2px;background:var(--gray2);margin:0 8px;}
+.step-line.done{background:var(--green);}
+
+/* ── SPECIALTY GRID ── */
+.section-label{font-size:12px;font-weight:700;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+.specialty-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:24px;}
+.specialty-card{border:2px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;transition:all 0.2s;}
+.specialty-card:hover{border-color:var(--cyan);background:rgba(0,170,255,0.04);}
+.specialty-card.selected{border-color:var(--blue);background:rgba(0,61,130,0.05);}
+.specialty-icon{font-size:28px;margin-bottom:6px;}
+.specialty-name{font-size:12px;font-weight:700;color:var(--text);}
+
+/* ── DOCTOR CARDS ── */
+.doctor-list{display:flex;flex-direction:column;gap:12px;margin-bottom:24px;}
+.doctor-card{border:2px solid var(--border);border-radius:12px;padding:16px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:all 0.2s;}
+.doctor-card:hover{border-color:var(--cyan);}
+.doctor-card.selected{border-color:var(--blue);background:rgba(0,61,130,0.03);}
+.doctor-avatar{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;font-weight:800;color:white;}
+.doctor-info{flex:1;}
+.doctor-name{font-size:14px;font-weight:800;color:var(--text);}
+.doctor-spec{font-size:12px;color:var(--blue2);font-weight:600;margin-top:1px;}
+.doctor-meta{display:flex;gap:12px;margin-top:6px;}
+.doctor-tag{font-size:11px;color:var(--text2);background:var(--gray);padding:3px 8px;border-radius:6px;font-weight:600;}
+.doctor-fee{font-size:13px;font-weight:800;color:var(--green);}
+
+/* ── DATE SLOTS ── */
+.date-row{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px;}
+.date-pill{border:2px solid var(--border);border-radius:10px;padding:10px 14px;text-align:center;cursor:pointer;transition:all 0.2s;flex-shrink:0;min-width:64px;}
+.date-pill:hover{border-color:var(--cyan);}
+.date-pill.selected{border-color:var(--blue);background:var(--blue);color:white;}
+.date-day{font-size:11px;font-weight:700;opacity:0.7;}
+.date-num{font-size:18px;font-weight:800;line-height:1;}
+.date-mon{font-size:11px;font-weight:600;opacity:0.7;}
+
+.slot-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px;}
+.slot{border:2px solid var(--border);border-radius:8px;padding:8px;text-align:center;font-size:12px;font-weight:700;cursor:pointer;transition:all 0.2s;color:var(--text2);}
+.slot:hover{border-color:var(--cyan);color:var(--blue);}
+.slot.selected{border-color:var(--blue);background:var(--blue);color:white;}
+.slot.taken{background:var(--gray);color:var(--border);cursor:not-allowed;border-color:transparent;}
+
+/* ── FORM ── */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full{grid-column:1/-1;}
+.form-label{font-size:12px;font-weight:700;color:var(--text2);}
+.form-input{border:2px solid var(--border);border-radius:10px;padding:11px 14px;font-family:'Nunito',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color 0.2s;}
+.form-input:focus{border-color:var(--blue2);}
+select.form-input{cursor:pointer;}
+
+/* ── BOOK BUTTON ── */
+.book-btn{width:100%;background:var(--blue);color:white;border:none;border-radius:12px;padding:16px;font-family:'Nunito',sans-serif;font-size:16px;font-weight:800;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.book-btn:hover{background:var(--blue2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,61,130,0.3);}
+.book-btn:active{transform:scale(0.98);}
+
+/* ── SIDEBAR ── */
+.sidebar-card{margin-bottom:16px;}
+.appt-summary{background:var(--blue);color:white;border-radius:16px;padding:20px;}
+.appt-summary h3{font-size:14px;font-weight:800;opacity:0.7;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px;}
+.appt-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.1);font-size:13px;}
+.appt-row:last-child{border-bottom:none;}
+.appt-key{opacity:0.7;font-weight:600;}
+.appt-val{font-weight:800;}
+.appt-total{margin-top:14px;background:rgba(255,255,255,0.15);border-radius:10px;padding:12px;display:flex;justify-content:space-between;align-items:center;}
+.appt-total-label{font-size:13px;font-weight:700;}
+.appt-total-amt{font-size:20px;font-weight:800;}
+
+.info-card{background:white;border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--shadow);}
+.info-card h4{font-size:13px;font-weight:800;color:var(--text);margin-bottom:12px;}
+.info-row{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px;font-size:12px;color:var(--text2);}
+.info-icon{font-size:16px;flex-shrink:0;}
+
+/* ── CONFIRMATION ── */
+.confirmation{display:none;text-align:center;padding:40px 24px;}
+.conf-circle{width:80px;height:80px;background:#e8f8f2;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px;}
+.conf-title{font-family:'Playfair Display',serif;font-size:24px;color:var(--green);margin-bottom:8px;}
+.conf-id{font-size:13px;color:var(--text2);margin-bottom:20px;}
+.conf-id span{font-weight:800;color:var(--blue);font-size:16px;}
+.conf-box{background:var(--gray);border-radius:12px;padding:16px;text-align:left;margin-bottom:20px;}
+.conf-row{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);}
+.conf-row:last-child{border-bottom:none;}
+.conf-row-key{color:var(--text2);font-weight:600;}
+.conf-row-val{font-weight:800;color:var(--text);}
+.conf-msg{font-size:13px;color:var(--text2);line-height:1.6;margin-bottom:20px;}
+.conf-btn{background:var(--green);color:white;border:none;border-radius:10px;padding:12px 28px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;}
+
+/* ── NOVA BADGE ── */
+.nova-badge{position:fixed;bottom:24px;right:24px;background:var(--blue);color:white;border-radius:12px;padding:10px 16px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(0,61,130,0.3);z-index:999;}
+.nova-dot{width:8px;height:8px;background:#7dd3fc;border-radius:50%;animation:pulse2 1.5s infinite;}
+@keyframes pulse2{0%,100%{opacity:1}50%{opacity:0.4}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-mark">A+</div>
+    <div class="nav-brand">Apollo Hospitals<span>TRUSTED SINCE 1983</span></div>
+  </div>
+  <div class="nav-links">
+    <a href="#">Find Doctors</a>
+    <a href="#" class="active">Book Appointment</a>
+    <a href="#">Health Records</a>
+    <a href="#">Emergency</a>
+  </div>
+  <button class="nav-btn">My Account</button>
+</nav>
+
+<div class="hero-strip">
+  <div>
+    <div class="hero-title">Book an Appointment <span>Online</span></div>
+    <div class="hero-sub">Consult with India's top doctors — in-person or video</div>
+  </div>
+  <div class="hero-pills">
+    <div class="hero-pill">🏥 50+ Specialties</div>
+    <div class="hero-pill">👨‍⚕️ 9,000+ Doctors</div>
+    <div class="hero-pill">⚡ Instant Confirmation</div>
+  </div>
+</div>
+
+<div class="main">
+  <!-- LEFT PANEL -->
+  <div>
+    <div class="card">
+      <div class="card-header">
+        <h2>Book Doctor Appointment</h2>
+        <p>Select specialty → Doctor → Date & Time → Enter details</p>
+      </div>
+      <div class="card-body" id="booking-form">
+
+        <!-- Steps -->
+        <div class="steps">
+          <div class="step active" id="s1">
+            <div class="step-num">1</div>
+            <div class="step-label">Specialty</div>
+          </div>
+          <div class="step-line" id="l1"></div>
+          <div class="step pending" id="s2">
+            <div class="step-num">2</div>
+            <div class="step-label">Doctor</div>
+          </div>
+          <div class="step-line" id="l2"></div>
+          <div class="step pending" id="s3">
+            <div class="step-num">3</div>
+            <div class="step-label">Schedule</div>
+          </div>
+          <div class="step-line" id="l3"></div>
+          <div class="step pending" id="s4">
+            <div class="step-num">4</div>
+            <div class="step-label">Details</div>
+          </div>
+        </div>
+
+        <!-- Specialty -->
+        <div class="section-label">Select Specialty</div>
+        <div class="specialty-grid">
+          <div class="specialty-card selected" onclick="selectSpecialty(this,'General Physician')">
+            <div class="specialty-icon">🩺</div>
+            <div class="specialty-name">General Physician</div>
+          </div>
+          <div class="specialty-card" onclick="selectSpecialty(this,'Cardiology')">
+            <div class="specialty-icon">❤️</div>
+            <div class="specialty-name">Cardiology</div>
+          </div>
+          <div class="specialty-card" onclick="selectSpecialty(this,'Nephrology')">
+            <div class="specialty-icon">🫀</div>
+            <div class="specialty-name">Nephrology</div>
+          </div>
+          <div class="specialty-card" onclick="selectSpecialty(this,'Orthopaedics')">
+            <div class="specialty-icon">🦴</div>
+            <div class="specialty-name">Orthopaedics</div>
+          </div>
+          <div class="specialty-card" onclick="selectSpecialty(this,'Neurology')">
+            <div class="specialty-icon">🧠</div>
+            <div class="specialty-name">Neurology</div>
+          </div>
+          <div class="specialty-card" onclick="selectSpecialty(this,'Dermatology')">
+            <div class="specialty-icon">🧴</div>
+            <div class="specialty-name">Dermatology</div>
+          </div>
+          <div class="specialty-card" onclick="selectSpecialty(this,'Diabetology')">
+            <div class="specialty-icon">💉</div>
+            <div class="specialty-name">Diabetology</div>
+          </div>
+          <div class="specialty-card" onclick="selectSpecialty(this,'Oncology')">
+            <div class="specialty-icon">🔬</div>
+            <div class="specialty-name">Oncology</div>
+          </div>
+        </div>
+
+        <!-- Doctors -->
+        <div class="section-label">Available Doctors</div>
+        <div class="doctor-list">
+          <div class="doctor-card selected" onclick="selectDoctor(this,'Dr. Ramesh Sharma','MBBS, MD — 22 yrs exp','₹800')">
+            <div class="doctor-avatar" style="background:#003d82">RS</div>
+            <div class="doctor-info">
+              <div class="doctor-name">Dr. Ramesh Sharma</div>
+              <div class="doctor-spec">General Physician</div>
+              <div class="doctor-meta">
+                <div class="doctor-tag">MBBS, MD</div>
+                <div class="doctor-tag">22 yrs exp</div>
+                <div class="doctor-tag">⭐ 4.9</div>
+              </div>
+            </div>
+            <div class="doctor-fee">₹800</div>
+          </div>
+          <div class="doctor-card" onclick="selectDoctor(this,'Dr. Priya Nair','MBBS, DNB — 15 yrs exp','₹600')">
+            <div class="doctor-avatar" style="background:#0057b8">PN</div>
+            <div class="doctor-info">
+              <div class="doctor-name">Dr. Priya Nair</div>
+              <div class="doctor-spec">General Physician</div>
+              <div class="doctor-meta">
+                <div class="doctor-tag">MBBS, DNB</div>
+                <div class="doctor-tag">15 yrs exp</div>
+                <div class="doctor-tag">⭐ 4.8</div>
+              </div>
+            </div>
+            <div class="doctor-fee">₹600</div>
+          </div>
+          <div class="doctor-card" onclick="selectDoctor(this,'Dr. Arjun Patel','MD, DM — 18 yrs exp','₹1,000')">
+            <div class="doctor-avatar" style="background:#00aaff">AP</div>
+            <div class="doctor-info">
+              <div class="doctor-name">Dr. Arjun Patel</div>
+              <div class="doctor-spec">General Physician</div>
+              <div class="doctor-meta">
+                <div class="doctor-tag">MD, DM</div>
+                <div class="doctor-tag">18 yrs exp</div>
+                <div class="doctor-tag">⭐ 5.0</div>
+              </div>
+            </div>
+            <div class="doctor-fee">₹1,000</div>
+          </div>
+        </div>
+
+        <!-- Dates -->
+        <div class="section-label">Select Date</div>
+        <div class="date-row" id="date-row"></div>
+
+        <!-- Time Slots -->
+        <div class="section-label">Available Slots</div>
+        <div class="slot-grid">
+          <div class="slot taken">09:00 AM</div>
+          <div class="slot" onclick="selectSlot(this,'09:30 AM')">09:30 AM</div>
+          <div class="slot selected" onclick="selectSlot(this,'10:00 AM')">10:00 AM</div>
+          <div class="slot" onclick="selectSlot(this,'10:30 AM')">10:30 AM</div>
+          <div class="slot taken">11:00 AM</div>
+          <div class="slot" onclick="selectSlot(this,'11:30 AM')">11:30 AM</div>
+          <div class="slot" onclick="selectSlot(this,'02:00 PM')">02:00 PM</div>
+          <div class="slot" onclick="selectSlot(this,'02:30 PM')">02:30 PM</div>
+          <div class="slot taken">03:00 PM</div>
+          <div class="slot" onclick="selectSlot(this,'03:30 PM')">03:30 PM</div>
+          <div class="slot" onclick="selectSlot(this,'04:00 PM')">04:00 PM</div>
+          <div class="slot taken">04:30 PM</div>
+        </div>
+
+        <!-- Patient Form -->
+        <div class="section-label" style="margin-top:8px;">Patient Details</div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Full Name *</label>
+            <input class="form-input" id="patient-name" type="text" placeholder="Enter full name" value="Ramesh Kumar"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Age *</label>
+            <input class="form-input" id="patient-age" type="number" placeholder="Age" value="68"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number *</label>
+            <input class="form-input" id="patient-phone" type="tel" placeholder="+91 XXXXX XXXXX" value="+91 98765 43210"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gender</label>
+            <select class="form-input">
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Reason for Visit</label>
+            <input class="form-input" id="visit-reason" type="text" placeholder="Brief description of symptoms" value="Chest pain and breathlessness"/>
+          </div>
+        </div>
+
+        <button class="book-btn" onclick="confirmBooking()">
+          🏥 Confirm Appointment — ₹800
+        </button>
+      </div>
+
+      <!-- Confirmation Screen -->
+      <div class="confirmation" id="confirmation">
+        <div class="conf-circle">✅</div>
+        <div class="conf-title">Appointment Confirmed!</div>
+        <div class="conf-id">Confirmation ID: <span id="conf-id-val">NB-AP-000000</span></div>
+        <div class="conf-box" id="conf-details"></div>
+        <div class="conf-msg">A confirmation SMS has been sent to your registered mobile number. Please arrive 15 minutes before your appointment time with a valid ID proof.</div>
+        <button class="conf-btn" onclick="resetBooking()">Book Another Appointment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div>
+    <div class="appt-summary sidebar-card">
+      <h3>Appointment Summary</h3>
+      <div class="appt-row"><span class="appt-key">Hospital</span><span class="appt-val">Apollo Hospitals, Ahmedabad</span></div>
+      <div class="appt-row"><span class="appt-key">Doctor</span><span class="appt-val" id="sum-doctor">Dr. Ramesh Sharma</span></div>
+      <div class="appt-row"><span class="appt-key">Specialty</span><span class="appt-val" id="sum-spec">General Physician</span></div>
+      <div class="appt-row"><span class="appt-key">Date</span><span class="appt-val" id="sum-date">—</span></div>
+      <div class="appt-row"><span class="appt-key">Time</span><span class="appt-val" id="sum-time">10:00 AM</span></div>
+      <div class="appt-row"><span class="appt-key">Patient</span><span class="appt-val" id="sum-patient">Ramesh Kumar</span></div>
+      <div class="appt-total">
+        <span class="appt-total-label">Consultation Fee</span>
+        <span class="appt-total-amt" id="sum-fee">₹800</span>
+      </div>
+    </div>
+
+    <div class="info-card sidebar-card">
+      <h4>Why Apollo Hospitals?</h4>
+      <div class="info-row"><span class="info-icon">🏆</span><span>JCI & NABH Accredited Hospital</span></div>
+      <div class="info-row"><span class="info-icon">👨‍⚕️</span><span>9,000+ specialist doctors across India</span></div>
+      <div class="info-row"><span class="info-icon">📱</span><span>SMS & WhatsApp confirmation immediately</span></div>
+      <div class="info-row"><span class="info-icon">🔄</span><span>Free rescheduling up to 24 hours before</span></div>
+      <div class="info-row"><span class="info-icon">💊</span><span>Prescription & lab reports on Apollo app</span></div>
+    </div>
+
+    <div class="info-card">
+      <h4>Emergency Helpline</h4>
+      <div style="font-size:22px;font-weight:800;color:var(--red);margin:6px 0;">1860-500-1066</div>
+      <div style="font-size:12px;color:var(--text2);">Available 24/7 · Ambulance · ICU</div>
+    </div>
+  </div>
+</div>
+
+<div class="nova-badge">
+  <div class="nova-dot"></div>
+  Nova Bridge is automating this booking
+</div>
+
+<script>
+// Generate dates
+const dateRow = document.getElementById('date-row');
+const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const today = new Date();
+for(let i=0;i<7;i++){
+  const d = new Date(today);
+  d.setDate(today.getDate()+i);
+  const pill = document.createElement('div');
+  pill.className = 'date-pill' + (i===1?' selected':'');
+  pill.innerHTML = `<div class="date-day">${days[d.getDay()]}</div><div class="date-num">${d.getDate()}</div><div class="date-mon">${months[d.getMonth()]}</div>`;
+  pill.onclick = function(){ document.querySelectorAll('.date-pill').forEach(p=>p.classList.remove('selected')); this.classList.add('selected');
+    document.getElementById('sum-date').textContent = `${d.getDate()} ${months[d.getMonth()]}`;
+  };
+  dateRow.appendChild(pill);
+  if(i===1) document.getElementById('sum-date').textContent = `${d.getDate()} ${months[d.getMonth()]}`;
+}
+
+let selectedDoctor = 'Dr. Ramesh Sharma';
+let selectedSpec   = 'General Physician';
+let selectedFee    = '₹800';
+let selectedSlot   = '10:00 AM';
+
+function selectSpecialty(el, name){
+  document.querySelectorAll('.specialty-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedSpec = name;
+  document.getElementById('sum-spec').textContent = name;
+}
+
+function selectDoctor(el, name, qual, fee){
+  document.querySelectorAll('.doctor-card').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDoctor = name; selectedFee = fee;
+  document.getElementById('sum-doctor').textContent = name;
+  document.getElementById('sum-fee').textContent = fee;
+  document.querySelector('.book-btn').textContent = `🏥 Confirm Appointment — ${fee}`;
+}
+
+function selectSlot(el, time){
+  document.querySelectorAll('.slot:not(.taken)').forEach(s=>s.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedSlot = time;
+  document.getElementById('sum-time').textContent = time;
+}
+
+document.getElementById('patient-name').addEventListener('input', function(){
+  document.getElementById('sum-patient').textContent = this.value || '—';
+});
+
+function confirmBooking(){
+  const name   = document.getElementById('patient-name').value || 'Patient';
+  const age    = document.getElementById('patient-age').value || '—';
+  const phone  = document.getElementById('patient-phone').value || '—';
+  const reason = document.getElementById('visit-reason').value || '—';
+  const dateEl = document.querySelector('.date-pill.selected');
+  const dateText = document.getElementById('sum-date').textContent;
+  const confId = 'NB-AP-' + Math.random().toString(36).substr(2,6).toUpperCase();
+
+  document.getElementById('conf-id-val').textContent = confId;
+  document.getElementById('conf-details').innerHTML = `
+    <div class="conf-row"><span class="conf-row-key">Patient</span><span class="conf-row-val">${name}, ${age} yrs</span></div>
+    <div class="conf-row"><span class="conf-row-key">Doctor</span><span class="conf-row-val">${selectedDoctor}</span></div>
+    <div class="conf-row"><span class="conf-row-key">Specialty</span><span class="conf-row-val">${selectedSpec}</span></div>
+    <div class="conf-row"><span class="conf-row-key">Date & Time</span><span class="conf-row-val">${dateText} at ${selectedSlot}</span></div>
+    <div class="conf-row"><span class="conf-row-key">Hospital</span><span class="conf-row-val">Apollo Hospitals, Ahmedabad</span></div>
+    <div class="conf-row"><span class="conf-row-key">Reason</span><span class="conf-row-val">${reason}</span></div>
+    <div class="conf-row"><span class="conf-row-key">Fee Paid</span><span class="conf-row-val" style="color:var(--green)">${selectedFee}</span></div>
+  `;
+  document.getElementById('booking-form').style.display = 'none';
+  document.getElementById('confirmation').style.display = 'block';
+}
+
+function resetBooking(){
+  document.getElementById('booking-form').style.display = 'block';
+  document.getElementById('confirmation').style.display = 'none';
+}
+</script>
+</body>
+</html>

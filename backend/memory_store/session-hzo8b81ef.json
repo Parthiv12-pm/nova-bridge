@@ -1,0 +1,103 @@
+{
+  "session_id": "session-hzo8b81ef",
+  "user_name": null,
+  "created_at": "2026-03-16T16:16:05.499951",
+  "last_active": "2026-03-16T16:20:33.653477",
+  "preferred_hospital": null,
+  "preferred_pharmacy": null,
+  "preferred_doctor": null,
+  "preferred_language": "en",
+  "caregiver_name": null,
+  "caregiver_phone": null,
+  "caregiver_email": null,
+  "last_intent": null,
+  "last_clinic": null,
+  "last_doctor": null,
+  "last_medication": null,
+  "last_pharmacy": null,
+  "last_bill_type": null,
+  "medicine_schedule": [],
+  "emotional_history": [
+    {
+      "timestamp": "2026-03-16T16:16:27.539526",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T16:16:27.542018",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "Listening..."
+    },
+    {
+      "timestamp": "2026-03-16T16:17:48.700590",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T16:17:48.700590",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "Listening..."
+    },
+    {
+      "timestamp": "2026-03-16T16:19:56.405053",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T16:19:56.409645",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    },
+    {
+      "timestamp": "2026-03-16T16:20:08.725175",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T16:20:08.730321",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    },
+    {
+      "timestamp": "2026-03-16T16:20:16.609569",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T16:20:16.613812",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "Listening..."
+    },
+    {
+      "timestamp": "2026-03-16T16:20:33.637701",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T16:20:33.637701",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    }
+  ],
+  "task_history": [],
+  "wake_time": null,
+  "sleep_time": null,
+  "missed_medicines": 0,
+  "distress_count_today": 0,
+  "last_distress_alert": null,
+  "total_tasks_completed": 0,
+  "total_hours_saved": 0.0,
+  "total_cost_saved_inr": 0.0
+}

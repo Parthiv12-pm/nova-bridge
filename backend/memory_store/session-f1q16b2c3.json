@@ -1,0 +1,199 @@
+{
+  "session_id": "session-f1q16b2c3",
+  "user_name": null,
+  "created_at": "2026-03-16T22:06:20.762503",
+  "last_active": "2026-03-16T22:10:54.203528",
+  "preferred_hospital": null,
+  "preferred_pharmacy": null,
+  "preferred_doctor": null,
+  "preferred_language": "en",
+  "caregiver_name": null,
+  "caregiver_phone": null,
+  "caregiver_email": null,
+  "last_intent": null,
+  "last_clinic": null,
+  "last_doctor": null,
+  "last_medication": null,
+  "last_pharmacy": null,
+  "last_bill_type": null,
+  "medicine_schedule": [],
+  "emotional_history": [
+    {
+      "timestamp": "2026-03-16T22:06:35.855603",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T22:06:35.863332",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    },
+    {
+      "timestamp": "2026-03-16T22:06:49.579848",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T22:06:49.583740",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "medicine finished refill"
+    },
+    {
+      "timestamp": "2026-03-16T22:07:08.378829",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T22:07:08.399665",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    },
+    {
+      "timestamp": "2026-03-16T22:07:18.212591",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T22:07:18.216178",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    },
+    {
+      "timestamp": "2026-03-16T22:07:26.295363",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T22:07:26.298752",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    },
+    {
+      "timestamp": "2026-03-16T22:07:40.373864",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T22:07:40.378795",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    },
+    {
+      "timestamp": "2026-03-16T22:07:53.441874",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T22:07:53.445754",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    },
+    {
+      "timestamp": "2026-03-16T22:08:02.654618",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T22:08:02.658272",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    },
+    {
+      "timestamp": "2026-03-16T22:08:11.424534",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T22:08:11.431809",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    },
+    {
+      "timestamp": "2026-03-16T22:08:19.291079",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T22:08:19.291079",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    },
+    {
+      "timestamp": "2026-03-16T22:08:26.826855",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T22:08:26.826855",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    },
+    {
+      "timestamp": "2026-03-16T22:10:30.409692",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T22:10:30.409692",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    },
+    {
+      "timestamp": "2026-03-16T22:10:48.128603",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T22:10:48.128603",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    },
+    {
+      "timestamp": "2026-03-16T22:10:54.199525",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-16T22:10:54.203528",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": ""
+    }
+  ],
+  "task_history": [],
+  "wake_time": null,
+  "sleep_time": null,
+  "missed_medicines": 0,
+  "distress_count_today": 0,
+  "last_distress_alert": null,
+  "total_tasks_completed": 0,
+  "total_hours_saved": 0.0,
+  "total_cost_saved_inr": 0.0
+}

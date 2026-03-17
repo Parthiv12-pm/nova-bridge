@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nova Bridge — Access the World</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+<!-- ══ SPLASH ══════════════════════════════════════════ -->
+<div id="splash">
+  <div class="splash-grid"></div>
+  <div class="splash-orb s1"></div>
+  <div class="splash-orb s2"></div>
+  <div id="splash-particles"></div>
+  <div class="splash-logo-wrap">
+    <div class="splash-icon">🌉</div>
+    <div class="splash-ring-spin"></div>
+  </div>
+  <div class="splash-title">NOVA <em>Bridge</em></div>
+  <div class="splash-sub">Access the World</div>
+  <div class="splash-bar-wrap">
+    <div class="splash-bar"><div class="splash-fill"></div></div>
+    <div class="splash-msg" id="splash-status">Initializing…</div>
+  </div>
+</div>
+
+<!-- ══ HEADER ══════════════════════════════════════════ -->
+<header class="header">
+  <div class="logo">
+    <div class="logo-gem">🌉</div>
+    <span class="logo-nova">NOVA</span>
+    <span class="logo-bridge">Bridge</span>
+    <span class="v-badge">v2</span>
+  </div>
+  <nav class="page-nav">
+    <a class="nav-tab active" href="index.html">🎙️ Assistant</a>
+    <a class="nav-tab" href="patient-life.html">📊 Patient Life</a>
+  </nav>
+  <div class="header-right">
+    <div class="engine-badge" id="engine-badge" style="display:none"></div>
+    <div class="hstatus">
+      <span class="status-dot" id="status-dot"></span>
+      <span id="status-text">Ready</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══ STICKY HINTS (non-blocking banners) ════════════ -->
+<div class="memory-hint-bar" id="memory-hint" style="display:none"></div>
+<div class="proactive-banner" id="proactive-panel" style="display:none">
+  <span class="pro-icon">💡</span>
+  <span class="pro-msg"></span>
+  <button class="pro-dismiss" onclick="dismissProactive()">×</button>
+</div>
+
+<!-- ══ APP WRAPPER — full scrollable page ════════════ -->
+<div class="app-wrapper">
+
+  <!-- ══ TOP LIVE ZONE: voice panel + process sidebar ══ -->
+  <div class="live-zone">
+
+    <!-- ── LEFT: Voice / Camera / Chat ─────────────── -->
+    <section class="voice-panel">
+
+      <!-- Top controls row -->
+      <div class="vp-top">
+        <div class="emotion-ring" id="emotion-ring">
+          <div class="em-inner">
+            <div class="em-icon" id="emotion-icon">😌</div>
+            <div class="em-label" id="emotion-label">Calm</div>
+          </div>
+        </div>
+
+        <div class="vp-controls">
+          <button class="ctrl-btn mic-btn" id="speak-btn" onclick="startListening()">
+            <div class="mic-ring">
+              <span class="ctrl-icon" id="mic-icon">🎙️</span>
+              <div class="mic-waves" id="mic-waves">
+                <i></i><i></i><i></i><i></i><i></i>
+              </div>
+            </div>
+            <span class="ctrl-label">
+              <span id="mic-label">Tap to Speak</span>
+              <small>or say "Hey Nova"</small>
+            </span>
+          </button>
+
+          <button class="ctrl-btn cam-btn" id="camera-btn" onclick="toggleCamera()">
+            <div class="mic-ring">
+              <span class="ctrl-icon">📷</span>
+            </div>
+            <span class="ctrl-label">
+              <span>Camera</span>
+              <small>Live Vision</small>
+            </span>
+          </button>
+
+          <button class="ctrl-btn demo-btn" onclick="testDemo()">
+            <div class="mic-ring">
+              <span class="ctrl-icon">▶</span>
+            </div>
+            <span class="ctrl-label">
+              <span>Demo</span>
+              <small>Try a sample</small>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Camera preview (shown when active) -->
+      <video id="webcam-preview" autoplay playsinline></video>
+      <canvas id="webcam-canvas" style="display:none"></canvas>
+
+      <!-- Live listening ticker (shown while mic is open) -->
+      <div class="live-ticker" id="live-ticker" style="display:none">
+        <span class="ticker-dot"></span>
+        <span class="ticker-text" id="transcript-box">Listening…</span>
+      </div>
+
+      <!-- CHAT THREAD — all messages appear here -->
+      <div class="chat-thread" id="chat-thread">
+        <div class="chat-welcome">
+          <div class="cw-avatar">🌉</div>
+          <div class="cw-body">
+            <div class="cw-name">Nova Bridge</div>
+            <div class="cw-text">Hi! I'm Nova. I can book doctors, order medicines, pay bills and more. Tap the mic or say <strong>"Hey Nova"</strong> to start — or just type below.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text input row -->
+      <div class="chat-input-row">
+        <input class="chat-input" id="chat-input" type="text"
+               placeholder="Type a message or tap the mic…" autocomplete="off"/>
+        <button class="send-btn" onclick="sendText()" title="Send">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+
+      <!-- In-panel crisis strip (never blocks the mic) -->
+      <div class="crisis-strip" id="crisis-panel" style="display:none">
+        <span>🚨</span>
+        <span class="crisis-msg" id="crisis-message"></span>
+        <button onclick="dismissCrisis()">OK</button>
+      </div>
+
+      <!-- Inactivity -->
+      <div class="inactivity-panel" id="inactivity-panel" style="display:none"></div>
+    </section>
+
+    <!-- ── RIGHT: Process Sidebar (non-blocking) ─────── -->
+    <aside class="process-sidebar" id="process-sidebar">
+      <div class="sb-header">
+        <span class="sb-title">⚡ Live Process</span>
+        <span class="sb-indicator" id="sb-dot"></span>
+      </div>
+
+      <!-- Empty state -->
+      <div class="sb-empty" id="sb-empty">
+        <div class="sbe-icon">🔄</div>
+        <div class="sbe-text">Processes appear here<br/><small>You can still talk while something runs</small></div>
+      </div>
+
+      <!-- Agent console -->
+      <div class="sb-card" id="agent-console-panel" style="display:none"></div>
+
+      <!-- Safety check -->
+      <div class="sb-card" id="safety-check-panel" style="display:none"></div>
+
+      <!-- Confirmation (in sidebar — never blocks voice) -->
+      <div class="sb-card confirm-card" id="confirmation-box" style="display:none">
+        <div class="cc-label">⚠️ Confirm Action</div>
+        <div class="cc-text" id="confirmation-text"></div>
+        <div class="cc-btns">
+          <button class="cc-yes" onclick="confirmAction()">✓ Yes, go ahead</button>
+          <button class="cc-no" onclick="cancelAction()">✗ Cancel</button>
+        </div>
+      </div>
+
+      <!-- Result -->
+      <div class="sb-card result-card" id="result-box" style="display:none">
+        <div class="rc-icon">✅</div>
+        <div class="rc-text" id="result-text"></div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ══ BOTTOM: Dashboard (scroll into view) ══════════ -->
+  <div class="dashboard-zone">
+    <div class="dz-divider">
+      <span>📊 Caregiver Dashboard</span>
+    </div>
+
+    <!-- Metrics -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="mc-ico">✅</div>
+        <div class="mc-val" id="tasks-completed">0</div>
+        <div class="mc-lbl">Tasks Done</div>
+      </div>
+      <div class="metric-card green">
+        <div class="mc-ico">⏱️</div>
+        <div class="mc-val" id="hours-saved">0.0h</div>
+        <div class="mc-lbl">Hours Saved</div>
+      </div>
+      <div class="metric-card teal">
+        <div class="mc-ico">💰</div>
+        <div class="mc-val" id="costs-saved">₹0</div>
+        <div class="mc-lbl">Cost Saved</div>
+      </div>
+      <div class="metric-card amber">
+        <div class="mc-ico">🔔</div>
+        <div class="mc-val" id="alerts-count">0</div>
+        <div class="mc-lbl">Alerts</div>
+      </div>
+    </div>
+
+    <div class="impact-bar" id="impact-summary">Nova Bridge is ready to help.</div>
+
+    <!-- Lower dashboard cards -->
+    <div class="lower-grid">
+
+      <div class="lower-card score-card-wrap">
+        <div class="lc-title">Weekly Score</div>
+        <div id="weekly-score">
+          <div class="score-circle" style="border-color:var(--accent)">
+            <span class="score-num" style="color:var(--accent)">—</span>
+            <span class="score-max">/100</span>
+          </div>
+          <div class="score-grade">Loading…</div>
+        </div>
+      </div>
+
+      <div class="lower-card">
+        <div class="lc-title">Medicine Today</div>
+        <div class="medicine-panel" id="medicine-panel">
+          <div class="empty-note">No medicines scheduled</div>
+        </div>
+      </div>
+
+      <div class="lower-card">
+        <div class="lc-title">Behavior Alerts</div>
+        <div class="behavior-alerts" id="behavior-alerts">
+          <div class="empty-note">No deviations today</div>
+        </div>
+      </div>
+
+      <div class="lower-card">
+        <div class="lc-title">Emotional Timeline</div>
+        <div class="timeline" id="timeline">
+          <div class="empty-note">No activity yet</div>
+        </div>
+      </div>
+
+      <div class="lower-card">
+        <div class="lc-title">Recent Actions</div>
+        <div class="actions-list" id="actions-list">
+          <div class="empty-note">No actions yet</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div><!-- /app-wrapper -->
+
+<!-- Loading — small inline spinner, NOT full-screen blocker -->
+<div class="mini-loader" id="loading-overlay" style="display:none">
+  <div class="ml-spin"></div>
+  <div class="ml-text" id="loading-text">Thinking…</div>
+</div>
+
+<script>
+/* ═══ SPLASH ═══════════════════════════════════════════ */
+(function(){
+  var c=document.getElementById('splash-particles');
+  for(var i=0;i<14;i++){
+    var p=document.createElement('div'); p.className='sp';
+    var s=2+Math.random()*4;
+    p.style.cssText='left:'+(Math.random()*100)+'%;width:'+s+'px;height:'+s+'px;'
+      +'animation-duration:'+(4+Math.random()*6)+'s;animation-delay:'+(Math.random()*4)+'s;'
+      +'--dx:'+((Math.random()-0.5)*80)+'px;';
+    c.appendChild(p);
+  }
+  var msgs=['Initializing…','Loading AI engine…','Connecting services…','Ready!'], idx=0;
+  var el=document.getElementById('splash-status');
+  var iv=setInterval(function(){ idx<msgs.length ? el.textContent=msgs[idx++] : clearInterval(iv); }, 700);
+  setTimeout(function(){
+    document.getElementById('splash').classList.add('hide');
+    setTimeout(function(){ document.getElementById('splash').style.display='none'; }, 800);
+  }, 2900);
+})();
+
+/* ═══ WAKE WORD — "Hey Nova" background listener ═══════ */
+(function(){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR) return;
+  var wake=null;
+  function startWake(){
+    if(wake) return;
+    try {
+      wake=new SR();
+      wake.continuous=true; wake.interimResults=true; wake.lang='en-IN';
+      wake.onresult=function(e){
+        var t=Array.from(e.results).map(function(r){return r[0].transcript.toLowerCase();}).join('');
+        if(t.includes('hey nova')){
+          try{wake.stop();}catch(x){}
+          wake=null;
+          setTimeout(function(){ if(typeof startListening==='function' && !window._novaListening) startListening(); },200);
+        }
+      };
+      wake.onend=function(){ wake=null; setTimeout(startWake,2000); };
+      wake.onerror=function(){ wake=null; setTimeout(startWake,5000); };
+      wake.start();
+    } catch(x){ wake=null; }
+  }
+  window.addEventListener('load',function(){ setTimeout(startWake,3500); });
+})();
+
+/* ═══ TEXT INPUT SEND ══════════════════════════════════ */
+function sendText(){
+  var inp=document.getElementById('chat-input');
+  var txt=inp ? inp.value.trim() : '';
+  if(!txt) return;
+  inp.value='';
+  if(typeof appendUserBubble==='function') appendUserBubble(txt);
+  if(typeof runPipeline==='function') runPipeline(txt,null);
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var inp=document.getElementById('chat-input');
+  if(inp) inp.addEventListener('keydown',function(e){ if(e.key==='Enter') sendText(); });
+});
+
+/* ═══ CHAT BUBBLE HELPERS ══════════════════════════════ */
+window.appendUserBubble=function(text){
+  var thread=document.getElementById('chat-thread');
+  if(!thread) return;
+  var cw=thread.querySelector('.chat-welcome');
+  if(cw) cw.style.display='none';
+  var d=document.createElement('div'); d.className='bubble user-bubble';
+  d.textContent=text;
+  thread.appendChild(d);
+  thread.scrollTop=thread.scrollHeight;
+};
+window.appendNovaBubble=function(text){
+  var thread=document.getElementById('chat-thread');
+  if(!thread) return;
+  var d=document.createElement('div'); d.className='bubble nova-bubble';
+  d.innerHTML='<span class="nb-avatar">🌉</span><span class="nb-text">'+text+'</span>';
+  thread.appendChild(d);
+  thread.scrollTop=thread.scrollHeight;
+};
+window.appendStatusBubble=function(text,cls){
+  var thread=document.getElementById('chat-thread');
+  if(!thread) return;
+  var d=document.createElement('div'); d.className='bubble status-bubble '+(cls||'');
+  d.textContent=text;
+  thread.appendChild(d);
+  thread.scrollTop=thread.scrollHeight;
+};
+</script>
+
+<script src="js/app.js"></script>
+
+<!-- Patch app.js: redirect all UI into chat/sidebar, never block voice -->
+<script>
+(function(){
+  window.showNovaResponse=function(text){
+    window.appendNovaBubble(text);
+    var el=document.getElementById('nova-response');
+    if(el) el.style.display='none';
+  };
+  window.showLoading=function(text,steps){
+    var ml=document.getElementById('loading-overlay');
+    var mt=document.getElementById('loading-text');
+    if(ml) ml.style.display='flex';
+    if(mt) mt.textContent=text||'Thinking…';
+    window._showSidebarProcessing(text,steps||[]);
+    setStatus('Processing…','amber');
+  };
+  window.hideLoading=function(){
+    var ml=document.getElementById('loading-overlay');
+    if(ml) ml.style.display='none';
+    setStatus('Ready','green');
+  };
+  window._showSidebarProcessing=function(title,steps){
+    var empty=document.getElementById('sb-empty');
+    if(empty) empty.style.display='none';
+    var dot=document.getElementById('sb-dot');
+    if(dot){ dot.style.background='var(--amber)'; dot.style.display='inline-block'; }
+    var panel=document.getElementById('agent-console-panel');
+    if(!panel) return;
+    panel.style.display='block';
+    var html=steps.map(function(s){
+      return '<div class="sb-step pending"><span class="ss-ico">○</span><span>'+s+'</span></div>';
+    }).join('');
+    panel.innerHTML='<div class="sb-card-label">'+title+'</div><div class="sb-steps">'+html+'</div>';
+    var items=panel.querySelectorAll('.sb-step');
+    items.forEach(function(item,i){
+      setTimeout(function(){
+        item.classList.remove('pending'); item.classList.add('running');
+        item.querySelector('.ss-ico').textContent='◉';
+        if(i>0){
+          var prev=items[i-1];
+          prev.classList.remove('running'); prev.classList.add('done');
+          prev.querySelector('.ss-ico').textContent='✓';
+        }
+        if(i===items.length-1){
+          setTimeout(function(){
+            item.classList.remove('running'); item.classList.add('done');
+            item.querySelector('.ss-ico').textContent='✓';
+            var d=document.getElementById('sb-dot');
+            if(d) d.style.background='var(--green)';
+          },600);
+        }
+      },i*420);
+    });
+  };
+  window.setListening=function(val){
+    window._novaListening=val;
+    var ticker=document.getElementById('live-ticker');
+    var btn=document.getElementById('speak-btn');
+    var lbl=document.getElementById('mic-label');
+    var waves=document.getElementById('mic-waves');
+    if(val){
+      if(ticker) ticker.style.display='flex';
+      if(btn) btn.classList.add('listening');
+      if(lbl) lbl.textContent='Listening…';
+      if(waves) waves.classList.add('active');
+    } else {
+      if(ticker) ticker.style.display='none';
+      if(btn) btn.classList.remove('listening');
+      if(lbl) lbl.textContent='Tap to Speak';
+      if(waves) waves.classList.remove('active');
+    }
+  };
+  var _origRun=window.runPipeline;
+  window.runPipeline=function(text,img){
+    if(text) window.appendUserBubble(text);
+    if(_origRun) return _origRun.call(window,text,img);
+  };
+  window.showConfirmation=function(text){
+    var box=document.getElementById('confirmation-box');
+    var txt=document.getElementById('confirmation-text');
+    var empty=document.getElementById('sb-empty');
+    if(empty) empty.style.display='none';
+    window.renderSafetyCheck({approved:true});
+    if(box) box.style.display='block';
+    if(txt) txt.textContent=text;
+    var sb=document.getElementById('process-sidebar');
+    if(sb) sb.scrollTop=sb.scrollHeight;
+  };
+  window.showResult=function(text){
+    window.appendNovaBubble('✅ '+text);
+    var rb=document.getElementById('result-box');
+    var rt=document.getElementById('result-text');
+    var empty=document.getElementById('sb-empty');
+    if(empty) empty.style.display='none';
+    if(rb) rb.style.display='block';
+    if(rt) rt.textContent=text;
+  };
+  window.hideBoxes=function(){
+    var el=document.getElementById('nova-response');
+    if(el) el.style.display='none';
+  };
+  var _origSetup=window.setupSpeechRecognition;
+  if(typeof _origSetup==='function'){
+    window.setupSpeechRecognition=function(){
+      var r=_origSetup();
+      if(r){
+        var _orig=r.onresult;
+        r.onresult=function(e){
+          var t=Array.from(e.results).map(function(r){return r[0].transcript;}).join('');
+          var tb=document.getElementById('transcript-box');
+          if(tb) tb.textContent=t;
+          if(_orig) _orig.call(r,e);
+        };
+      }
+      return r;
+    };
+  }
+})();
+</script>
+
+<!-- Hidden legacy element referenced by app.js -->
+<div id="nova-response" style="display:none"><div class="nova-label"></div><div class="nova-text"></div></div>
+</body>
+</html>
+
+
+
+

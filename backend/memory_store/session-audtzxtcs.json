@@ -1,0 +1,43 @@
+{
+  "session_id": "session-audtzxtcs",
+  "user_name": null,
+  "created_at": "2026-03-15T13:30:51.750501",
+  "last_active": "2026-03-15T13:31:17.545638",
+  "preferred_hospital": null,
+  "preferred_pharmacy": null,
+  "preferred_doctor": null,
+  "preferred_language": "en",
+  "caregiver_name": null,
+  "caregiver_phone": null,
+  "caregiver_email": null,
+  "last_intent": null,
+  "last_clinic": null,
+  "last_doctor": null,
+  "last_medication": null,
+  "last_pharmacy": null,
+  "last_bill_type": null,
+  "medicine_schedule": [],
+  "emotional_history": [
+    {
+      "timestamp": "2026-03-15T13:31:17.541882",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "No distress signals detected"
+    },
+    {
+      "timestamp": "2026-03-15T13:31:17.545638",
+      "emotion": "calm",
+      "score": 0.05,
+      "trigger": "Hello, hello, hello."
+    }
+  ],
+  "task_history": [],
+  "wake_time": null,
+  "sleep_time": null,
+  "missed_medicines": 0,
+  "distress_count_today": 0,
+  "last_distress_alert": null,
+  "total_tasks_completed": 0,
+  "total_hours_saved": 0.0,
+  "total_cost_saved_inr": 0.0
+}

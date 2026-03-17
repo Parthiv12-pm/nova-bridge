@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BESCOM — Online Bill Payment</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --blue:#003f88;--blue2:#005cbf;--sky:#0096d6;
+  --green:#007a3d;--green2:#00a550;
+  --orange:#e65c00;--yellow:#f5a623;
+  --white:#fff;--gray:#f0f4f8;--gray2:#e4eaf2;
+  --text:#1a2533;--text2:#5c6e8a;
+  --border:#cdd6e3;--shadow:0 2px 12px rgba(0,63,136,0.10);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Noto Sans',sans-serif;background:var(--gray);color:var(--text);}
+
+/* GOV HEADER */
+.gov-strip{background:#1a2a4a;color:rgba(255,255,255,0.7);font-size:11px;padding:6px 32px;display:flex;justify-content:space-between;}
+.gov-strip a{color:rgba(255,255,255,0.6);text-decoration:none;margin-left:16px;}
+header{background:white;border-bottom:3px solid var(--blue);padding:0 32px;display:flex;align-items:center;gap:16px;height:72px;box-shadow:var(--shadow);}
+.header-logo-circle{width:52px;height:52px;background:var(--blue);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;text-align:center;line-height:1.2;}
+.header-brand{flex:1;}
+.header-brand-name{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--blue);line-height:1;}
+.header-brand-full{font-size:11px;color:var(--text2);margin-top:2px;}
+.header-right{display:flex;align-items:center;gap:16px;}
+.header-contact{font-size:12px;color:var(--text2);text-align:right;}
+.header-contact strong{color:var(--blue);font-size:15px;display:block;}
+
+nav{background:var(--blue);padding:0 32px;display:flex;gap:0;}
+nav a{color:rgba(255,255,255,0.85);text-decoration:none;padding:12px 18px;font-size:13px;font-weight:600;border-right:1px solid rgba(255,255,255,0.1);transition:background 0.2s;}
+nav a:hover,nav a.active{background:var(--blue2);color:white;}
+
+.main{max-width:980px;margin:0 auto;padding:28px 24px;}
+.page-title{font-family:'Rajdhani',sans-serif;font-size:22px;font-weight:700;color:var(--blue);margin-bottom:4px;}
+.page-sub{font-size:13px;color:var(--text2);margin-bottom:24px;}
+
+.layout{display:grid;grid-template-columns:1fr 300px;gap:20px;}
+
+.card{background:white;border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:16px;}
+.card-header{background:var(--blue);color:white;padding:14px 20px;font-weight:700;font-size:14px;display:flex;align-items:center;gap:8px;}
+.card-body{padding:20px;}
+
+/* SEARCH */
+.search-tab{display:flex;border-bottom:2px solid var(--border);margin-bottom:20px;}
+.tab-btn{padding:10px 18px;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:600;border:none;background:none;cursor:pointer;color:var(--text2);border-bottom:3px solid transparent;margin-bottom:-2px;transition:all 0.2s;}
+.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group.full{grid-column:1/-1;}
+.form-label{font-size:12px;font-weight:600;color:var(--text2);}
+.form-label span{color:var(--orange);}
+.form-input{border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-family:'Noto Sans',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color 0.2s;}
+.form-input:focus{border-color:var(--blue);}
+.fetch-btn{background:var(--blue);color:white;border:none;border-radius:6px;padding:11px 24px;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:background 0.2s;}
+.fetch-btn:hover{background:var(--blue2);}
+
+/* BILL DETAILS */
+.bill-detail{display:none;}
+.bill-header{background:#e8f4fd;border:1px solid #b3d9f5;border-radius:8px;padding:16px;margin-bottom:16px;}
+.bill-header-row{display:flex;justify-content:space-between;align-items:flex-start;}
+.consumer-name{font-size:18px;font-weight:700;color:var(--text);}
+.consumer-id{font-size:12px;color:var(--text2);margin-top:3px;}
+.bill-status{background:var(--orange);color:white;padding:5px 12px;border-radius:100px;font-size:12px;font-weight:700;}
+.bill-status.paid{background:var(--green);}
+
+.bill-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.bill-item{background:var(--gray);border-radius:8px;padding:12px;text-align:center;}
+.bill-item-label{font-size:11px;color:var(--text2);font-weight:600;margin-bottom:4px;}
+.bill-item-val{font-size:16px;font-weight:700;color:var(--text);}
+.bill-item-val.red{color:var(--orange);}
+.bill-item-val.green{color:var(--green);}
+
+.charges-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px;}
+.charges-table th{background:var(--gray2);text-align:left;padding:10px 12px;font-size:12px;color:var(--text2);font-weight:700;}
+.charges-table td{padding:10px 12px;border-bottom:1px solid var(--border);}
+.charges-table tr:last-child td{font-weight:700;background:#fff8e6;border-top:2px solid var(--yellow);}
+
+.pay-btn{width:100%;background:var(--green);color:white;border:none;border-radius:8px;padding:14px;font-family:'Noto Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background 0.2s;}
+.pay-btn:hover{background:var(--green2);}
+
+/* PAYMENT METHODS */
+.pay-methods{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.pay-method{border:2px solid var(--border);border-radius:8px;padding:12px;text-align:center;cursor:pointer;transition:all 0.2s;font-size:12px;font-weight:600;color:var(--text2);}
+.pay-method:hover{border-color:var(--sky);}
+.pay-method.selected{border-color:var(--blue);background:rgba(0,63,136,0.04);color:var(--blue);}
+.pay-method-icon{font-size:24px;margin-bottom:4px;}
+
+/* CONFIRMATION */
+.payment-confirmation{display:none;text-align:center;padding:32px;}
+.pay-conf-icon{font-size:64px;margin-bottom:12px;}
+.pay-conf-title{font-family:'Rajdhani',sans-serif;font-size:26px;font-weight:700;color:var(--green);margin-bottom:6px;}
+.pay-conf-id{font-size:13px;color:var(--text2);margin-bottom:20px;}
+.pay-conf-id strong{color:var(--blue);font-size:16px;}
+.receipt-box{background:var(--gray);border-radius:8px;padding:16px;text-align:left;margin-bottom:20px;}
+.receipt-row{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid var(--border);}
+.receipt-row:last-child{border-bottom:none;font-weight:700;color:var(--green);font-size:15px;}
+.receipt-key{color:var(--text2);}
+.download-btn{background:var(--blue);color:white;border:none;border-radius:8px;padding:12px 24px;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-right:10px;}
+.new-btn{background:white;color:var(--blue);border:2px solid var(--blue);border-radius:8px;padding:12px 24px;font-family:'Noto Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+
+/* SIDEBAR */
+.sidebar .card-body{padding:16px;}
+.quick-links{display:flex;flex-direction:column;gap:8px;}
+.quick-link{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;cursor:pointer;transition:all 0.2s;color:var(--text);}
+.quick-link:hover{border-color:var(--blue);color:var(--blue);background:rgba(0,63,136,0.03);}
+.notice-box{background:#fff8e6;border:1px solid var(--yellow);border-radius:6px;padding:14px;font-size:12px;color:#7a5200;line-height:1.6;}
+.notice-title{font-weight:700;margin-bottom:6px;}
+
+.nova-badge{position:fixed;bottom:24px;right:24px;background:var(--blue);color:white;border-radius:8px;padding:10px 16px;font-size:12px;font-weight:700;display:flex;align-items:center;gap:8px;box-shadow:0 6px 20px rgba(0,63,136,0.3);z-index:999;}
+.nova-dot{width:8px;height:8px;background:#90cdf4;border-radius:50%;animation:pulseg 1.5s infinite;}
+@keyframes pulseg{0%,100%{opacity:1}50%{opacity:0.3}}
+</style>
+</head>
+<body>
+
+<div class="gov-strip">
+  <span>Government of Karnataka · Official BESCOM Portal</span>
+  <span>
+    <a href="#">Hindi</a><a href="#">ಕನ್ನಡ</a><a href="#">Accessibility</a>
+  </span>
+</div>
+
+<header>
+  <div class="header-logo-circle">BES<br>COM</div>
+  <div class="header-brand">
+    <div class="header-brand-name">BESCOM</div>
+    <div class="header-brand-full">Bangalore Electricity Supply Company Limited · Karnataka</div>
+  </div>
+  <div class="header-right">
+    <div class="header-contact">
+      Helpline (24/7)<strong>1912</strong>
+    </div>
+  </div>
+</header>
+
+<nav>
+  <a href="#">Home</a>
+  <a href="#" class="active">Pay Bill</a>
+  <a href="#">New Connection</a>
+  <a href="#">Complaints</a>
+  <a href="#">Tariff</a>
+  <a href="#">Download App</a>
+</nav>
+
+<div class="main">
+  <div class="page-title">⚡ Online Bill Payment</div>
+  <div class="page-sub">Pay your electricity bill quickly and securely · Instant payment confirmation</div>
+
+  <div class="layout">
+    <!-- LEFT -->
+    <div>
+      <div class="card">
+        <div class="card-header">🔍 Fetch Your Bill</div>
+        <div class="card-body">
+          <div class="search-tab">
+            <button class="tab-btn active" onclick="switchTab(this,'rr')">RR Number</button>
+            <button class="tab-btn" onclick="switchTab(this,'mobile')">Mobile Number</button>
+            <button class="tab-btn" onclick="switchTab(this,'account')">Account Number</button>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">RR Number / Consumer Number <span>*</span></label>
+              <input class="form-input" id="rr-input" type="text" placeholder="Enter RR Number (e.g. 108-10-12345)" value="108-10-98765"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Captcha Verification</label>
+              <div style="display:flex;gap:8px;">
+                <div style="background:#1a2a4a;color:white;padding:10px 16px;border-radius:6px;font-weight:800;font-size:15px;letter-spacing:3px;font-family:monospace;">X7K2P</div>
+                <input class="form-input" type="text" placeholder="Enter captcha" value="X7K2P" style="flex:1"/>
+              </div>
+            </div>
+          </div>
+          <button class="fetch-btn" onclick="fetchBill()">Fetch Bill Details →</button>
+        </div>
+      </div>
+
+      <!-- BILL DETAILS (hidden initially) -->
+      <div class="card" id="bill-card" style="display:none">
+        <div class="card-header">📄 Bill Details</div>
+        <div class="card-body">
+          <div class="bill-header">
+            <div class="bill-header-row">
+              <div>
+                <div class="consumer-name" id="bd-name">Ramesh Kumar</div>
+                <div class="consumer-id">RR No: <strong>108-10-98765</strong> · Meter No: <strong>KA-BGL-445521</strong></div>
+                <div class="consumer-id" style="margin-top:4px;">📍 #24, 5th Cross, Satellite Road, Ahmedabad · 380015</div>
+              </div>
+              <div class="bill-status">PENDING</div>
+            </div>
+          </div>
+
+          <div class="bill-grid">
+            <div class="bill-item">
+              <div class="bill-item-label">Bill Month</div>
+              <div class="bill-item-val" id="bd-month">Nov 2024</div>
+            </div>
+            <div class="bill-item">
+              <div class="bill-item-label">Units Consumed</div>
+              <div class="bill-item-val">285 kWh</div>
+            </div>
+            <div class="bill-item">
+              <div class="bill-item-label">Due Date</div>
+              <div class="bill-item-val red" id="bd-due">15 Dec 2024</div>
+            </div>
+          </div>
+
+          <table class="charges-table">
+            <thead>
+              <tr><th>Charge Description</th><th>Units</th><th>Rate</th><th>Amount (₹)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Energy Charges (0-50 units)</td><td>50</td><td>₹0.50/unit</td><td>₹25.00</td></tr>
+              <tr><td>Energy Charges (51-100 units)</td><td>50</td><td>₹3.00/unit</td><td>₹150.00</td></tr>
+              <tr><td>Energy Charges (101-200 units)</td><td>100</td><td>₹5.75/unit</td><td>₹575.00</td></tr>
+              <tr><td>Energy Charges (201-300 units)</td><td>85</td><td>₹7.05/unit</td><td>₹599.25</td></tr>
+              <tr><td>Fixed Charges</td><td>—</td><td>—</td><td>₹40.00</td></tr>
+              <tr><td>Electricity Duty (5%)</td><td>—</td><td>—</td><td>₹69.46</td></tr>
+              <tr><td colspan="3"><strong>Total Amount Due</strong></td><td><strong>₹1,458.71</strong></td></tr>
+            </tbody>
+          </table>
+
+          <div class="section-label" style="font-size:12px;font-weight:700;color:var(--text2);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;">Select Payment Method</div>
+          <div class="pay-methods">
+            <div class="pay-method selected" onclick="selectPay(this)">
+              <div class="pay-method-icon">📱</div>UPI / GPay
+            </div>
+            <div class="pay-method" onclick="selectPay(this)">
+              <div class="pay-method-icon">💳</div>Credit / Debit Card
+            </div>
+            <div class="pay-method" onclick="selectPay(this)">
+              <div class="pay-method-icon">🏦</div>Net Banking
+            </div>
+          </div>
+
+          <button class="pay-btn" onclick="payNow()">
+            🔒 Pay ₹1,458.71 Securely Now
+          </button>
+        </div>
+
+        <!-- PAYMENT CONFIRMATION -->
+        <div class="payment-confirmation" id="pay-confirmation">
+          <div class="pay-conf-icon">✅</div>
+          <div class="pay-conf-title">Payment Successful!</div>
+          <div class="pay-conf-id">Transaction ID: <strong id="txn-id">NB-BES-000000</strong></div>
+          <div class="receipt-box" id="receipt-details"></div>
+          <button class="download-btn" onclick="alert('Receipt downloaded!')">⬇ Download Receipt</button>
+          <button class="new-btn" onclick="resetPayment()">Pay Another Bill</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="card">
+        <div class="card-header">🔗 Quick Links</div>
+        <div class="card-body">
+          <div class="quick-links">
+            <div class="quick-link">📊 View Consumption History</div>
+            <div class="quick-link">📥 Download Previous Bills</div>
+            <div class="quick-link">🔧 Report Power Outage</div>
+            <div class="quick-link">📝 Update Contact Details</div>
+            <div class="quick-link">⚡ Apply New Connection</div>
+            <div class="quick-link">📱 Download BESCOM App</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">📢 Important Notice</div>
+        <div class="card-body">
+          <div class="notice-box">
+            <div class="notice-title">⚠ Scheduled Maintenance</div>
+            Online payment portal will be unavailable on 20th December 2024 from 11 PM to 2 AM for scheduled maintenance. Please pay before or after this window.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">📞 Customer Support</div>
+        <div class="card-body" style="font-size:13px;color:var(--text2);line-height:1.8;">
+          <div><strong style="color:var(--blue)">Toll Free:</strong> 1912</div>
+          <div><strong style="color:var(--blue)">WhatsApp:</strong> 9449844984</div>
+          <div><strong style="color:var(--blue)">Email:</strong> grievance@bescom.co.in</div>
+          <div style="margin-top:8px;font-size:11px;">Mon–Sat: 8AM–8PM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="nova-badge">
+  <div class="nova-dot"></div>
+  Nova Bridge is paying your bill
+</div>
+
+<script>
+function switchTab(btn, type){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function fetchBill(){
+  const rr = document.getElementById('rr-input').value.trim();
+  if(!rr){ alert('Please enter your RR Number'); return; }
+  const today = new Date();
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('bd-month').textContent = months[today.getMonth()] + ' ' + today.getFullYear();
+  const dueDate = new Date(today); dueDate.setDate(today.getDate()+15);
+  document.getElementById('bd-due').textContent = dueDate.getDate() + ' ' + months[dueDate.getMonth()] + ' ' + dueDate.getFullYear();
+  document.getElementById('bill-card').style.display='block';
+  document.getElementById('bill-card').scrollIntoView({behavior:'smooth'});
+}
+
+function selectPay(el){
+  document.querySelectorAll('.pay-method').forEach(m=>m.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function payNow(){
+  const txnId = 'NB-BES-' + Math.random().toString(36).substr(2,8).toUpperCase();
+  const today = new Date();
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  document.getElementById('txn-id').textContent = txnId;
+  document.getElementById('receipt-details').innerHTML = `
+    <div class="receipt-row"><span class="receipt-key">Consumer Name</span><span>Ramesh Kumar</span></div>
+    <div class="receipt-row"><span class="receipt-key">RR Number</span><span>108-10-98765</span></div>
+    <div class="receipt-row"><span class="receipt-key">Bill Month</span><span>${months[today.getMonth()]} ${today.getFullYear()}</span></div>
+    <div class="receipt-row"><span class="receipt-key">Payment Date</span><span>${today.getDate()} ${months[today.getMonth()]} ${today.getFullYear()}</span></div>
+    <div class="receipt-row"><span class="receipt-key">Payment Mode</span><span>UPI / GPay</span></div>
+    <div class="receipt-row"><span class="receipt-key">Transaction ID</span><span>${txnId}</span></div>
+    <div class="receipt-row"><span class="receipt-key">Amount Paid</span><span style="color:var(--green)">₹1,458.71</span></div>
+  `;
+  document.querySelector('.card-body:last-of-type > *:not(#pay-confirmation)');
+  document.querySelectorAll('#bill-card .card-body > *:not(#pay-confirmation)').forEach(el=>el.style.display='none');
+  document.getElementById('pay-confirmation').style.display='block';
+}
+
+function resetPayment(){
+  document.getElementById('bill-card').style.display='none';
+  document.getElementById('rr-input').value='';
+  document.querySelectorAll('#bill-card .card-body > *:not(#pay-confirmation)').forEach(el=>el.style.display='');
+  document.getElementById('pay-confirmation').style.display='none';
+}
+</script>
+</body>
+</html>
